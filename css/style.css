@@ -1,4 +1,119 @@
-h1{
-  border-color: #d3e644;
-  border-style: dashed;
+/*
+  * Author: Zella Running
+  * Description: CSS file for Inventory App
+  * Date: 12 November 2025
+  * 
+*/
+
+/* Overall page */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 40px;
+    background-color: #f6f7f3; 
+    color: #333;
+    text-align: center; 
+}
+
+/* Main title */
+h1 {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 3px dashed #d3e644;
+    background-color: #a7b39a;
+    color: white;
+    border-radius: 10px;
+}
+
+/* Section titles */
+h2 {
+    background-color: #d3a520; 
+    color: white;
+    padding: 10px 0;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+button, input[type="submit"] {
+    background-color: #a7b39a;    
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Hover effect for buttons */
+button:hover,
+input[type="submit"]:hover {
+    background-color: #8f9f82;  
+}
+
+/* Table Styling */
+table {
+    margin: 20px auto; 
+    width: 80%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Table headers */
+th {
+    background-color: #d3a520;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+}
+
+/* Table cells */
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+/* Delete button */
+.delete-btn {
+    background-color: #d3453f;
+}
+
+/* Hover effect for delete button */
+.delete-btn:hover {
+    background-color: #b5302b;
+}
+
+/* Add Item Box */
+#add-item-box {
+    margin: 0 auto;
+    margin-top: 40px;
+    border: 2px solid #a7b39a;
+    border-radius: 10px;
+    padding: 30px;
+    width: 400px;
+    background-color: white;
+}
+
+/* Form labels */
+#add-item-form label {
+    display: inline-block;
+    width: 80px;
+}
+
+/* Input styling */
+#add-item-form input[type="text"] {
+    width: 250px;
+    padding: 6px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Grid layout for the form */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
 }

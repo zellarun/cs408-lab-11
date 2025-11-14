@@ -1,61 +1,161 @@
+<!--
+  * Author: Zella Running
+  * Description: HTML file for Inventory App. App allows users to view, add, and delete items from an inventory database using a REST API.
+  * Date: 12 November 2025 
+-->
+
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Test AWS Lambda</title>
-    <meta name="description" content="">
+    <title>Zella's Inventory App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <h1>Simple Demo for PUT, GET, and DELETE</h1>
-    <p id="lambda-info">
-        <!-- loaded with AJAX -->
-    </p>
+    <h1>Zella's Inventory App</h1>
+    <button id="load-items">Load All Items</button>
+
+    <p id="lambda-info"></p>
+
+    <!-- Items table -->
+    <table id="items-table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+    </table>
 
     <hr>
-    <button id="send-data">Send Data</button>
-    <p>Sends an example JSON object to the server with id 11111</p>
+
+    <!-- Add new item form -->
+    <div id="add-item-box">
+        <h2>Add New Item to Database</h2>
+        <form id="add-item-form">
+            <div>
+                <label for="item-id">Id:</label>
+                <input type="text" id="item-id" name="item-id" placeholder="123">
+            </div>
+            <div>
+                <label for="item-name">Name:</label>
+                <input type="text" id="item-name" name="item-name" placeholder="foo">
+            </div>
+            <div>
+                <label for="item-price">Price:</label>
+                <input type="text" id="item-price" name="item-price" placeholder="10">
+            </div>
+            <input type="submit" value="Add Item">
+        </form>
+    </div>
+
     <script>
-        document.getElementById("send-data").onclick = function () {
-            let xhr = new XMLHttpRequest();
-            xhr.open("PUT", "Your Lambda here");
+        const API_BASE = "https://xr9gdcxmpl.execute-api.us-east-2.amazonaws.com/items";
+
+        // Render items into the table
+        function renderItems(items) {
+            const tbody = document.querySelector("#items-table tbody");
+            tbody.innerHTML = "";
+
+            items.forEach(item => {
+                const tr = document.createElement("tr");
+
+                const tdId = document.createElement("td");
+                tdId.textContent = item.id;
+
+                const tdName = document.createElement("td");
+                tdName.textContent = item.name;
+
+                const tdPrice = document.createElement("td");
+                tdPrice.textContent = item.price;
+
+                const tdAction = document.createElement("td");
+                const btn = document.createElement("button");
+                btn.textContent = "Delete";
+                btn.className = "delete-btn";
+                btn.dataset.id = item.id;
+                btn.onclick = function () {
+                    deleteItem(item.id);
+                };
+                tdAction.appendChild(btn);
+
+                tr.appendChild(tdId);
+                tr.appendChild(tdName);
+                tr.appendChild(tdPrice);
+                tr.appendChild(tdAction);
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Load all items (GET)
+        document.getElementById("load-items").onclick = function () {
+            const info = document.getElementById("lambda-info");
+            info.textContent = "Loading...";
+
+            const xhr = new XMLHttpRequest();
+            xhr.addEventListener("load", function () {
+                try {
+                    const items = JSON.parse(xhr.responseText);
+                    renderItems(items);
+                    info.textContent = "";
+                } catch (e) {
+                    console.error("Error parsing response:", xhr.responseText);
+                    info.textContent = "Error loading items – check console.";
+                }
+            });
+            xhr.open("GET", API_BASE);
+            xhr.send();
+        };
+
+        // Add new item (PUT)
+        document.getElementById("add-item-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const id = document.getElementById("item-id").value;
+            const name = document.getElementById("item-name").value;
+            const price = document.getElementById("item-price").value;
+
+            const xhr = new XMLHttpRequest();
+            xhr.addEventListener("load", function () {
+                // After adding, reload items so the table updates
+                document.getElementById("load-items").click();
+            });
+            xhr.open("PUT", API_BASE);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.send(JSON.stringify({
-                "id": "6666666",
-                "price": 19,
-                "name": "test put value"
+                id: id,
+                name: name,
+                price: Number(price)
             }));
-        }
-    </script>
 
-    <button id="load-data">Load Data</button>
-    <p>Loads data from the server</p>
-    <script>
-        document.getElementById("load-data").onclick = function () {
-            let lambda = document.getElementById("lambda-info");
-            let xhr = new XMLHttpRequest();
+            // clear form
+            document.getElementById("item-id").value = "";
+            document.getElementById("item-name").value = "";
+            document.getElementById("item-price").value = "";
+        });
+
+        // Delete item (DELETE)
+        function deleteItem(id) {
+            const xhr = new XMLHttpRequest();
             xhr.addEventListener("load", function () {
-                lambda.innerHTML = xhr.response;
+                // Reload items after delete
+                document.getElementById("load-items").click();
             });
-            xhr.open("GET", "Your Lambda here");
-            xhr.send();
-        }
 
-    </script>
-
-    <hr>
-    <button id="delete-data">Delete Data</button>
-    <p>Deletes a JSON object from the server with 11111</p>
-    <script>
-        document.getElementById("delete-data").onclick = function () {
-            let xhr = new XMLHttpRequest();
-            xhr.open("DELETE", "Your Lambda here");
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.send();
+            // Send DELETE request with item id in the body
+             xhr.open("DELETE", API_BASE);
+             xhr.setRequestHeader("Content-Type", "application/json");
+             xhr.send(JSON.stringify({ id: id }));
         }
     </script>
 </body>

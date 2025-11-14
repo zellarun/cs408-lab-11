@@ -2,23 +2,24 @@
 
 ## Overview
 
-TODO: Write a project description
+This is a simple inventory web application that interacts with an AWS Lambda backend to manage inventory items.
+
+The app allows users to:
+- Load all items stored in the database
+- Add new items using a form
+- Delete existing items from the table
+
+It demonstrates core web development concepts including DOM manipulation, AJAX requests, and serverless API integration. 
+
+## How to Run
+
+1. Clone the Git repository to your computer using VS Code or any code editor.
+
+2. In VS Code, right-click on index.html and choose either: “Show Preview” or “Open in Browser”
+
+3. The app will open in your browser, and you can use all inventory features immediately (load, add, and delete items)
 
 ## Sources and Credits
 
-TODO: You must credit the sources and authors of any code, libraries, or other
-assets you use in your project. If you leave this section blank, your project
-will be considered in violation of the Academic Honesty policy unless you truly
-created everything from scratch with no outside help. If you need to use a
-source that you cannot credit (e.g. a classmate's work), you must get explicit
-permission from your instructor.
-
-A simple bulleted list below is sufficient. For example:
-
-- Bootstrap: https://getbootstrap.com/
-- jQuery: https://jquery.com/
-- Background image: https://unsplash.com/photos/...
-- Sound effects: https://freesound.org/people/...
-- Icons: https://fontawesome.com/
-- Fonts: https://fonts.google.com/
-- etc.
+- https://docs.aws.amazon.com/lambda/latest/dg/welcome.html
+- https://coolors.co
